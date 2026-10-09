@@ -4,6 +4,7 @@ import Playlist from './components/Playlist'
 import Lyrics from './components/Lyrics'
 import Visualizer from './components/Visualizer'
 import AddTrack from './components/AddTrack'
+import SearchMusic from './components/SearchMusic'
 import { sampleTracks } from './utils/music'
 
 const PLAY_MODES = ['list', 'single', 'shuffle']
@@ -16,7 +17,7 @@ export default function App() {
   const [duration, setDuration] = useState(0)
   const [volume, setVolume] = useState(0.8)
   const [mode, setMode] = useState('list')
-  const [tab, setTab] = useState('playlist') // playlist | lyrics
+  const [tab, setTab] = useState('playlist') // playlist | search | lyrics
 
   const audioRef = useRef(null)
 
@@ -194,6 +195,12 @@ export default function App() {
               播放列表 ({tracks.length})
             </button>
             <button
+              className={`tab ${tab === 'search' ? 'active' : ''}`}
+              onClick={() => setTab('search')}
+            >
+              🔍 在线搜索
+            </button>
+            <button
               className={`tab ${tab === 'lyrics' ? 'active' : ''}`}
               onClick={() => setTab('lyrics')}
             >
@@ -208,6 +215,8 @@ export default function App() {
               onSelect={playTrack}
               onRemove={handleRemove}
             />
+          ) : tab === 'search' ? (
+            <SearchMusic onAdd={handleAddTrack} />
           ) : (
             <Lyrics lyricsText={currentTrack?.lyrics || ''} currentTime={currentTime} />
           )}
